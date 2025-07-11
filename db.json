@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": "5cd4",
+      "name": "funcionario1",
+      "email": "funcionaro1@onebus.com"
+    },
+    {
+      "id": "c251",
+      "name": "vvvv",
+      "email": "vvv@gmail"
+    },
+    {
+      "id": "e1d2",
+      "name": "oi",
+      "email": "funcionaro1@onebus.com"
+    },
+    {
+      "id": "4c54",
+      "name": "bruno",
+      "email": "samuel@bruno"
+    }
+  ]
+}
