@@ -1,1 +1,0 @@
-uma aplicação em react que usa o react hooks usando (User effect e user states) que implementa um CRUD de emails que salva os dados em um db em formato json e para fazer a api, a comunicação entre a obtenção desses dados (email e o registro no banco de dados é usado a biblioteca axios que faz a ps
