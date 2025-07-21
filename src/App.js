@@ -118,7 +118,7 @@ function App() {
               <td>{user.email}</td>
               <td>
                 <button className="edit" onClick={() => handleEditUser(user)}>Editar</button>
-                <button className="delete" onClick={() => handleDeleteUser(user.id)}>Deletar</button>
+                <button className="delete" onClick={() => handleDeleteUser(user.id)}>Excluir</button>
               </td>
             </tr>
           ))}
