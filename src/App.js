@@ -3,72 +3,72 @@ import api from './services/api';
 import './App.css';
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [newUser, setNewUser] = useState({ name: '', email: '' });
-  const [editingUser, setEditingUser] = useState(null); // Para controlar o modo de edição
+  const [usuario, setusuario] = useState([]);
+  const [novoUsuario, setnovoUsuario] = useState({ name: '', email: '' });
+  const [editarUsuario, seteditarUsuario] = useState(null); // Para controlar o modo de edição
 
   // READ: Carregar usuários da API
   useEffect(() => {
-    api.get('/users')
+    api.get('/usuario')
       .then(response => {
-        setUsers(response.data);
+        setusuario(response.data);
       })
       .catch(error => console.error("Houve um erro ao buscar os usuários:", error));
   }, []);
 
   // Handler para mudanças nos inputs do formulário
-  const handleInputChange = (event) => {
+  const update = (event) => {
     const { name, value } = event.target;
-    if (editingUser) {
-      setEditingUser({ ...editingUser, [name]: value });
+    if (editarUsuario) {
+      seteditarUsuario({ ...editarUsuario, [name]: value });
     } else {
-      setNewUser({ ...newUser, [name]: value });
+      setnovoUsuario({ ...novoUsuario, [name]: value });
     }
   };
 
   // CREATE: Adicionar um novo usuário
-  const handleAddUser = (event) => {
+  const create = (event) => {
     event.preventDefault();
-    api.post('/users', newUser)
+    api.post('/usuario', novoUsuario)
       .then(response => {
-        setUsers([...users, response.data]);
-        setNewUser({ name: '', email: '' }); // Limpa o formulário
+        setusuario([...usuario, response.data]);
+        setnovoUsuario({ name: '', email: '' }); // Limpa o formulário
       })
       .catch(error => console.error("Houve um erro ao adicionar o usuário:", error));
   };
 
   // UPDATE: Iniciar a edição de um usuário
-  const handleEditUser = (user) => {
-    setEditingUser(user);
+  const edicao = (user) => {
+    seteditarUsuario(user);
   };
 
   // UPDATE: Salvar as alterações do usuário
-  const handleUpdateUser = (event) => {
+  const updateSave = (event) => {
     event.preventDefault();
-    if (!editingUser) return;
+    if (!editarUsuario) return;
 
-    api.put(`/users/${editingUser.id}`, editingUser)
+    api.put(`/usuario/${editarUsuario.id}`, editarUsuario)
       .then(response => {
-        setUsers(users.map(user => (user.id === editingUser.id ? response.data : user)));
-        setEditingUser(null); // Sai do modo de edição
+        setusuario(usuario.map(user => (user.id === editarUsuario.id ? response.data : user)));
+        seteditarUsuario(null); // Sai do modo de edição
       })
       .catch(error => console.error("Houve um erro ao atualizar o usuário:", error));
   };
 
   // DELETE: Deletar um usuário
-  const handleDeleteUser = (id) => {
-    api.delete(`/users/${id}`)
+  const excluir = (id) => {
+    api.delete(`/usuario/${id}`)
       .then(() => {
-        setUsers(users.filter(user => user.id !== id));
+        setusuario(usuario.filter(user => user.id !== id));
       })
       .catch(error => console.error("Houve um erro ao deletar o usuário:", error));
   };
 
   // Formulário para adicionar ou editar
   const renderForm = () => {
-    const isEditing = !!editingUser;
-    const user = isEditing ? editingUser : newUser;
-    const handleSubmit = isEditing ? handleUpdateUser : handleAddUser;
+    const isEditing = !!editarUsuario;
+    const user = isEditing ? editarUsuario : novoUsuario;
+    const handleSubmit = isEditing ? updateSave : create;
     const buttonText = isEditing ? "Salvar Alterações" : "Adicionar Usuário";
 
     return (
@@ -77,7 +77,7 @@ function App() {
           type="text"
           name="name"
           value={user.name}
-          onChange={handleInputChange}
+          onChange={update}
           placeholder="Nome"
           required
         />
@@ -85,12 +85,12 @@ function App() {
           type="email"
           name="email"
           value={user.email}
-          onChange={handleInputChange}
+          onChange={update}
           placeholder="Email"
           required
         />
         <button type="submit">{buttonText}</button>
-        {isEditing && <button onClick={() => setEditingUser(null)}>Cancelar Edição</button>}
+        {isEditing && <button onClick={() => seteditarUsuario(null)}>Cancelar Edição</button>}
       </form>
     );
   };
@@ -99,7 +99,7 @@ function App() {
     <div className="App">
       <h1>CRUD de Usuários</h1>
 
-      <h2>{editingUser ? "Editar Usuário" : "Adicionar Novo Usuário"}</h2>
+      <h2>{editarUsuario ? "Editar Usuário" : "Adicionar Novo Usuário"}</h2>
       {renderForm()}
 
       <h2>Lista de Usuários</h2>
@@ -112,20 +112,22 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
+          {usuario.map(user => (
             <tr key={user.id}>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>
-                <button className="edit" onClick={() => handleEditUser(user)}>Editar</button>
-                <button className="delete" onClick={() => handleDeleteUser(user.id)}>Excluir</button>
+                <button className="edit" onClick={() => edicao(user)}>Editar</button>
+                <button className="delete" onClick={() => excluir(user.id)}>Excluir</button>
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody> 
       </table>
     </div>
   );
 }
 
 export default App;
+
+
